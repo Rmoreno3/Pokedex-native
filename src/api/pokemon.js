@@ -1,10 +1,9 @@
-const API_HOST = require('../utils/constants')
+import { API_HOST } from '@env'
 
 const getPokemonApi = async () => {
   const url = `${API_HOST}/pokemon?limit=20&offset=0`
   const response = await fetch(url)
   const data = await response.json()
-
   return data
 }
 
