@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { View, Text } from 'react-native'
+import { View } from 'react-native'
+import PokemonList from '../components/PokemonList'
 const { getPokemonApi, getPokemonDetailApi } = require('../api/pokemon')
 
 export default function Pokedex () {
@@ -26,12 +27,11 @@ export default function Pokedex () {
     }
 
     loadPokemons()
-    console.log(pokemons)
   }, [])
 
   return (
     <View>
-      <Text>Pokedex</Text>
+      <PokemonList pokemons={pokemons} />
     </View>
   )
 }
