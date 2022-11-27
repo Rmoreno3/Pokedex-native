@@ -5,10 +5,12 @@ const { getPokemonApi, getPokemonDetailApi } = require('../api/pokemon')
 
 export default function Pokedex () {
   const [pokemons, setPokemons] = useState([])
+  const [nextUrl, setNextUrl] = useState(null)
 
-  useEffect(() => {
-    const loadPokemons = async () => {
-      const data = await getPokemonApi()
+  const loadPokemons = async () => {
+    try {
+      const data = await getPokemonApi(nextUrl)
+      setNextUrl(data.next)
       const pokemonsArray = []
 
       for await (const pokemon of data.results) {
@@ -24,14 +26,20 @@ export default function Pokedex () {
       }
 
       setPokemons([...pokemons, ...pokemonsArray])
+    } catch (error) {
+      console.error(error)
     }
+  }
 
-    loadPokemons()
+  useEffect(() => {
+    (async () => {
+      await loadPokemons()
+    })()
   }, [])
 
   return (
     <View>
-      <PokemonList pokemons={pokemons} />
+      <PokemonList pokemons={pokemons} loadPokemons={loadPokemons} isNext={nextUrl} />
     </View>
   )
 }

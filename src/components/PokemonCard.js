@@ -4,9 +4,7 @@ const getColorPokemon = require('../api/services/getColorPokemon')
 
 export default function PokemonCard (props) {
   const { pokemon } = props
-
   const pokemonColor = getColorPokemon(pokemon.type)
-  console.log(pokemonColor)
 
   const bgStyles = {
     backgroundColor: pokemonColor,
@@ -25,7 +23,7 @@ export default function PokemonCard (props) {
   }
 
   return (
-    <TouchableWithoutFeedback onPress={goToPokemon}>
+    <TouchableWithoutFeedback onPress={goToPokemon} key={pokemon.id}>
       <View style={styles.cardContainer}>
         <View style={bgStyles}>
           <Text style={styles.styleOrderNum}>{`#${pokemon.order}`}</Text>
