@@ -12,6 +12,17 @@ const getPokemonApi = async (endpointUrl) => {
   }
 }
 
+const getPokemon = async (id) => {
+  try {
+    const url = `${API_HOST}/pokemon/${id}`
+    const response = await fetch(url)
+    const result = await response.json()
+    return result
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 const getPokemonDetailApi = async (url) => {
   try {
     const response = await fetch(url)
@@ -22,4 +33,4 @@ const getPokemonDetailApi = async (url) => {
   }
 }
 
-module.exports = { getPokemonApi, getPokemonDetailApi }
+module.exports = { getPokemonApi, getPokemonDetailApi, getPokemon }
