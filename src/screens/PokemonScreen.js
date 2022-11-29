@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
-import { SafeAreaView } from 'react-native'
+import { SafeAreaView, ScrollView } from 'react-native'
 import Header from '../components/Pokemon/Header'
 import Type from '../components/Pokemon/Type'
+import Stats from '../components/Pokemon/Stats'
 const { getPokemon } = require('../api/pokemon')
 
 export default function PokemonScreen (props) {
@@ -25,15 +26,18 @@ export default function PokemonScreen (props) {
 
   return (
     <SafeAreaView>
-      <Header
-        name={pokemon.name}
-        order={pokemon.order}
-        image={pokemon.sprites.other['official-artwork'].front_default}
-        type={pokemon.types[0].type.name}
-      />
-      <Type
-        types={pokemon.types}
-      />
+      <ScrollView>
+        <Header
+          name={pokemon.name}
+          order={pokemon.order}
+          image={pokemon.sprites.other['official-artwork'].front_default}
+          type={pokemon.types[0].type.name}
+        />
+        <Type
+          types={pokemon.types}
+        />
+        <Stats stats={pokemon.stats} />
+      </ScrollView>
     </SafeAreaView>
   )
 }
