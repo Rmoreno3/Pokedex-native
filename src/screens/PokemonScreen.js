@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { View, Text, Image, StyleSheet } from 'react-native'
+import { SafeAreaView } from 'react-native'
+import Header from '../components/Pokemon/Header'
 const { getPokemon } = require('../api/pokemon')
 
 export default function PokemonScreen (props) {
@@ -12,7 +13,6 @@ export default function PokemonScreen (props) {
       try {
         const response = await getPokemon(params.id)
         setPokemon(response)
-        console.log(response)
       } catch (error) {
         console.error(error)
         navigation.goBack()
@@ -23,20 +23,13 @@ export default function PokemonScreen (props) {
   if (!pokemon) return null
 
   return (
-    <View>
-      <Text>Estamos en un POKEMON!!</Text>
-      <Text>{pokemon.name}</Text>
-      <Image
-        source={{ uri: `${pokemon.sprites.other['official-artwork'].front_default}` }}
-        style={styles.imageStyle}
+    <SafeAreaView>
+      <Header
+        name={pokemon.name}
+        order={pokemon.order}
+        image={pokemon.sprites.other['official-artwork'].front_default}
+        type={pokemon.types[0].type.name}
       />
-    </View>
+    </SafeAreaView>
   )
 }
-
-const styles = StyleSheet.create({
-  imageStyle: {
-    width: 40,
-    height: 40
-  }
-})
