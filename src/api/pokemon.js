@@ -1,7 +1,6 @@
 import { API_HOST } from '@env'
 
 const getPokemonApi = async (endpointUrl) => {
-  console.log(endpointUrl)
   try {
     const url = `${API_HOST}/pokemon?limit=20&offset=0`
     const response = await fetch(endpointUrl || url)

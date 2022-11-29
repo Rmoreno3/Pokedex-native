@@ -12,7 +12,10 @@ export default function PokedexNavigation () {
       />
       <Stack.Screen
         name='Pokemon' component={PokemonScreen} options={{
-          headerTransparent: true
+          headerTransparent: true,
+          headerTitleStyle: {
+            color: '#ffffff'
+          }
         }}
       />
     </Stack.Navigator>

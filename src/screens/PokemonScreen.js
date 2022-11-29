@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { SafeAreaView } from 'react-native'
 import Header from '../components/Pokemon/Header'
+import Type from '../components/Pokemon/Type'
 const { getPokemon } = require('../api/pokemon')
 
 export default function PokemonScreen (props) {
@@ -29,6 +30,9 @@ export default function PokemonScreen (props) {
         order={pokemon.order}
         image={pokemon.sprites.other['official-artwork'].front_default}
         type={pokemon.types[0].type.name}
+      />
+      <Type
+        types={pokemon.types}
       />
     </SafeAreaView>
   )
