@@ -1,19 +1,25 @@
 import { useState, useEffect } from 'react'
 import { View } from 'react-native'
 import PokemonList from '../components/PokemonList'
-const { getPokemonApi, getPokemonDetailApi } = require('../api/pokemon')
+const { getPokemonsApi, getPokemonDetailApi } = require('../api/pokemon')
 
-export default function Pokedex () {
+export default function Pokedex() {
   const [pokemons, setPokemons] = useState([])
   const [nextUrl, setNextUrl] = useState(null)
 
+  useEffect(() => {
+    ;(async () => {
+      await loadPokemons()
+    })()
+  }, [])
+
   const loadPokemons = async () => {
     try {
-      const data = await getPokemonApi(nextUrl)
-      setNextUrl(data.next)
+      const response = await getPokemonsApi(nextUrl)
+      setNextUrl(response.next)
       const pokemonsArray = []
 
-      for await (const pokemon of data.results) {
+      for await (const pokemon of response.results) {
         const pokemonDetails = await getPokemonDetailApi(pokemon.url)
 
         pokemonsArray.push({
@@ -21,7 +27,7 @@ export default function Pokedex () {
           name: pokemonDetails.name,
           type: pokemonDetails.types[0].type.name,
           order: pokemonDetails.order,
-          image: pokemonDetails.sprites.other['official-artwork'].front_default
+          image: pokemonDetails.sprites.other['official-artwork'].front_default,
         })
       }
 
@@ -31,15 +37,13 @@ export default function Pokedex () {
     }
   }
 
-  useEffect(() => {
-    (async () => {
-      await loadPokemons()
-    })()
-  }, [])
-
   return (
     <View>
-      <PokemonList pokemons={pokemons} loadPokemons={loadPokemons} isNext={nextUrl} />
+      <PokemonList
+        pokemons={pokemons}
+        loadPokemons={loadPokemons}
+        isNext={nextUrl}
+      />
     </View>
   )
 }
