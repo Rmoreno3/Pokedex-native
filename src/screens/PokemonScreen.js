@@ -5,28 +5,36 @@ import Header from '../components/Pokemon/Header'
 import Type from '../components/Pokemon/Type'
 import Stats from '../components/Pokemon/Stats'
 import Icon from '@expo/vector-icons/FontAwesome5'
+import Favorite from '../components/Pokemon/Favorite'
 const { getPokemon } = require('../api/pokemon')
+import useAuth from '../hooks/useAuth'
 
-export default function PokemonScreen (props) {
-  const { navigation, route: { params } } = props
+export default function PokemonScreen(props) {
+  const {
+    navigation,
+    route: { params },
+  } = props
 
   const [pokemon, setPokemon] = useState(null)
+  const { auth } = useAuth()
 
   useEffect(() => {
     navigation.setOptions({
-      headerRight: () => null,
-      headerLeft: () => <Icon
-        name='arrow-left'
-        color='#FFFFFF'
-        size={20}
-        // style={{ marginLeft: 20 }}
-        onPress={navigation.goBack}
-                        />
+      headerRight: () => (auth ? <Favorite id={pokemon?.id} /> : null),
+      headerLeft: () => (
+        <Icon
+          name="arrow-left"
+          color="#FFFFFF"
+          size={20}
+          // style={{ marginLeft: 20 }}
+          onPress={navigation.goBack}
+        />
+      ),
     })
-  }, [navigation, params])
+  }, [navigation, params, pokemon, auth])
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       try {
         const response = await getPokemon(params.id)
         setPokemon(response)
@@ -48,9 +56,7 @@ export default function PokemonScreen (props) {
           image={pokemon.sprites.other['official-artwork'].front_default}
           type={pokemon.types[0].type.name}
         />
-        <Type
-          types={pokemon.types}
-        />
+        <Type types={pokemon.types} />
         <Stats stats={pokemon.stats} />
       </ScrollView>
     </SafeAreaView>
