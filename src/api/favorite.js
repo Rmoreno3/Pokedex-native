@@ -4,7 +4,7 @@ import { FAVORITE_STORAGE } from '@env'
 
 export async function addPokemonFavorite(id) {
   try {
-    const favorites = []
+    const favorites = await getPokemonFavorite()
     favorites.push(id)
     await AsyncStorage.setItem(FAVORITE_STORAGE, JSON.stringify(favorites))
   } catch (error) {
@@ -15,7 +15,16 @@ export async function addPokemonFavorite(id) {
 export async function getPokemonFavorite() {
   try {
     const response = await AsyncStorage.getItem(FAVORITE_STORAGE)
-    return response
+    return JSON.parse(response || [])
+  } catch (error) {
+    throw error
+  }
+}
+
+export async function isPokemonFavorite(id) {
+  try {
+    const response = await getPokemonFavorite()
+    return includes(response, id)
   } catch (error) {
     throw error
   }
