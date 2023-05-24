@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5'
 import FontAwesome from '@expo/vector-icons/FontAwesome'
-import { addPokemonFavorite, isPokemonFavorite } from '../../api/favorite'
+import {
+  addPokemonFavorite,
+  isPokemonFavorite,
+  removePokemonFavorite,
+} from '../../api/favorite'
 
 export default function Favorite(props) {
   const { id } = props
@@ -33,8 +37,13 @@ export default function Favorite(props) {
     }
   }
 
-  const removeFavorite = () => {
-    console.log('eliminando favorito')
+  const removeFavorite = async () => {
+    try {
+      await removePokemonFavorite(id)
+      onReloadCheckFavorite()
+    } catch (error) {
+      throw error
+    }
   }
 
   return (
